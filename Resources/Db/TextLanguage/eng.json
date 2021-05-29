@@ -1,0 +1,16 @@
+{
+    "menu":
+    {
+        "initialButton":"SOLO GAME",
+        "multiplayerButton":"MULTIPLAYER",
+        "credits":"CREDITS"
+    },
+    "cards":
+    [{   
+        "name":"TROVADS",
+        "description":"SUCH A DICK CARD"
+    }, {
+        "name":"boring man",
+        "description":"card such a boring"
+    }]
+}

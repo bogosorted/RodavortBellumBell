@@ -1,0 +1,16 @@
+{
+    "menu":
+    {
+        "initialButton":"JOGO SOLO",
+        "multiplayerButton":"DOIS JOGADORES",
+        "credits":"Créditos"
+    },
+    "cards":
+    [{   
+        "name":"Trovador",
+        "description":"CartaPicaMané"
+    }, {
+        "name":"mano chato",
+        "description":"carta muito chata"
+    }]
+}

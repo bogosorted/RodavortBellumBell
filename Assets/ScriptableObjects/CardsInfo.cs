@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card",menuName = "Cards/Normal")]
-public class Card : ScriptableObject
+public class CardsInfo : ScriptableObject
 {
     public uint cardId;
 
@@ -17,5 +17,3 @@ public class Card : ScriptableObject
     public AudioClip[] SoundInDeath;
 
 }
-
-

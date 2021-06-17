@@ -8,7 +8,7 @@
     "cards":
     [{   
         "name":"Trovador",
-        "description":"CartaPicaMané"
+        "description":"Ataque: 1+/-1 para todas as cartas"
     }, {
         "name":"mano chato",
         "description":"carta muito chata"

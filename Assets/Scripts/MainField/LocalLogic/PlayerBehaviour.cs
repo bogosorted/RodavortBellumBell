@@ -6,7 +6,6 @@ public class PlayerManager : MonoBehaviour
 {
     int life;
     int gold;
-    //List<Card>hand;
 
     void PutCardOnBoard()
     {

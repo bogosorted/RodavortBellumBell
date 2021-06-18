@@ -11,6 +11,7 @@ public class CardsInfo : ScriptableObject
     [Header("Attributes")]
     public int gold;
     public int life;
+    public int power;
 
     [Header("Dubbing")]
     public AudioClip[] SoundAtEntrance;

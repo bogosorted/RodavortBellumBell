@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: 0
   m_EditorClassIdentifier: 
   cardId: 0
-  design: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  design: {fileID: 21300000, guid: 5ca061bc3b40020429e0a70c90e49949, type: 3}
   gold: 4
   life: 6
+  power: 3
   SoundAtEntrance: []
   SoundInDeath: []

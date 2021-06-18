@@ -7,7 +7,7 @@ public class Card : MonoBehaviour
 {
     #region Attributes
     uint cardId;
-    int life,gold;
+    int life,gold,power;
    
     public Vector3 startPosition,finalPosition;
     public Quaternion startAngle,finalAngle;
@@ -20,7 +20,7 @@ public class Card : MonoBehaviour
     Sprite Design
     {
         get => Design;
-        set => transform.GetChild(0).GetComponent<Image>().sprite = value;
+        set => transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = value;
     }
 
     string Name
@@ -52,6 +52,14 @@ public class Card : MonoBehaviour
             transform.GetChild(4).GetComponent<Text>().text = gold.ToString();
         }
     }
+     int Power
+    {
+        get =>  power;
+        set {
+            power = value;
+            transform.GetChild(5).GetComponent<Text>().text = power.ToString();
+        }
+    }
 
     #endregion
     
@@ -60,8 +68,9 @@ public class Card : MonoBehaviour
         cardId = info.cardId;
         Life = info.life;
         Gold = info.gold;
+        Power = info.power;
         Design = info.design;
-        Name = JsonReader.ReceiveLenguageTexts(Settings.lenguage).cards[cardId].name;
-        Desc = JsonReader.ReceiveLenguageTexts(Settings.lenguage).cards[cardId].description;
+        Name = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].name;
+        Desc = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].description;
     }
 }

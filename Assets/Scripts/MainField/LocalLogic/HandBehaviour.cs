@@ -8,11 +8,17 @@ public class HandBehaviour : MonoBehaviour
     List<Card> hand = new List<Card>();
     List<Card> handOnBoard = new List<Card>();
 
-
-    [SerializeField] float initCardAnimationSpeed,initCardShowTime,sizeInitShowCard;
-    [SerializeField] float handXAxisWidth,handAngle,handCardSize,handSizeIncreaseValue;
     [SerializeField] GameObject cardPrefab;
+
+    [Header("Initial Created Card Settings")]
+    [SerializeField] float initCardAnimationSpeed;
+    [SerializeField] float initCardShowTime,sizeInitShowCard,initCardYMaxCurvePos,initCardXMaxCurvePos;
     [SerializeField] Vector3 startPosInitialCard,finalPosInitialCard;
+    
+    [Header("Hand Card Settings")]
+    [SerializeField] float handAnimationSpeed;  
+    [SerializeField] float handXAxisWidth,MaxHandAngle,handCardSize,handSizeIncreaseValue;
+    
 
     void Start()
     {
@@ -49,16 +55,28 @@ public class HandBehaviour : MonoBehaviour
     IEnumerator ShowInitializedCard(Card card)
     {
         RectTransform rectCard = card.transform.parent.GetComponent<RectTransform>();
+        Vector3 finalPositionWithCurve;
+        float curvePosX,curvePosY;
+        //x its constant, y its smooth. both are 1 when the another be 1
         float x,y;
-        
+
+        card.startAngle = Quaternion.Euler(0,90,90);
+        card.finalAngle = Quaternion.identity;
+
         x = 0;
         while (x <= 1)
         {          
             x += (initCardAnimationSpeed * Time.deltaTime);
             y = -x * x + 2 * x;
-        
-            rectCard.anchoredPosition = Vector3.Lerp(card.startPosition,card.finalPosition,y);
+
+            curvePosX = (y * - initCardXMaxCurvePos + card.finalPosition.x) + initCardXMaxCurvePos;
+            curvePosY = (y * -initCardYMaxCurvePos + card.finalPosition.y) + initCardYMaxCurvePos;
+            finalPositionWithCurve = new Vector3(curvePosX,curvePosY);
+
+            rectCard.transform.rotation = Quaternion.Lerp(card.startAngle,card.finalAngle,y);
+            rectCard.anchoredPosition = Vector3.Lerp(card.startPosition,finalPositionWithCurve,y);
             rectCard.localScale = Vector3.one * ((y+1)/2)* sizeInitShowCard;
+
             yield return null;
         }   
             
@@ -98,14 +116,14 @@ public class HandBehaviour : MonoBehaviour
             card.finalPosition = new Vector3(hand.Count != 1 ? concat : 0, 0);
 
             card.startAngle = rectCard.transform.rotation;
-            card.finalAngle =Quaternion.Euler(0,0,hand.Count != 1 ?(-concat/handXAxisWidth)* handAngle:0);
+            card.finalAngle =Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth)* MaxHandAngle:0);
 
             concat += WidthConst * 2;   
         }
 
         while(x<=1)
         {
-            x += (initCardAnimationSpeed * Time.deltaTime);
+            x += (handAnimationSpeed * Time.deltaTime);
             y = -x * x + 2 * x;
            
             foreach(Card card in hand)

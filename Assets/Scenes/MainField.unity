@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 11.1}
+  m_AnchoredPosition: {x: 0, y: 11.099976}
   m_SizeDelta: {x: 1036.5018, y: 447.96954}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &301906470
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.4117647}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 0
   m_OnCullStateChanged:
@@ -208,17 +208,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933e644b28762f245a15f354be7fc294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initCardAnimationSpeed: 1.9
-  initCardShowTime: 1.2
-  sizeInitShowCard: 1.4
-  handXAxisWidth: 60
-  handAngle: 2.5
-  handCardSize: 0.8
-  handSizeIncreaseValue: 4
   cardPrefab: {fileID: 2301914378777495648, guid: fe37b15ea49581946af24e5aa98174f7,
     type: 3}
+  initCardAnimationSpeed: 1.5
+  initCardShowTime: 1.5
+  sizeInitShowCard: 1.2
+  initCardYMaxCurvePos: 750
+  initCardXMaxCurvePos: 700
   startPosInitialCard: {x: 580, y: 200, z: 0}
   finalPosInitialCard: {x: 0, y: 500, z: 0}
+  handAnimationSpeed: 1.5
+  handXAxisWidth: 50
+  MaxHandAngle: 10
+  handCardSize: 0.6
+  handSizeIncreaseValue: 5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

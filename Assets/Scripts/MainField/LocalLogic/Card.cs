@@ -6,41 +6,28 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
     #region Attributes
+
     uint cardId;
     int life,gold,power;
-   
-    public Vector3 startPosition,finalPosition;
-    public Quaternion startAngle,finalAngle;
+
+    [Header("UI card references")]
+    [SerializeField] Image design;
+    [SerializeField] Text nameText,descText,lifeText,goldText,powerText;
+     
+    [HideInInspector] public Vector2 startSize;
+    [HideInInspector] public Vector2 startPosition,finalPosition;
+    [HideInInspector] public Quaternion startAngle,finalAngle;
 
     #endregion
 
     #region Properties
-
-
-    Sprite Design
-    {
-        get => Design;
-        set => transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = value;
-    }
-
-    string Name
-    {
-        get => Name;
-        set => transform.GetChild(1).GetComponent<Text>().text = value;
-    }
-
-    string Desc
-    {
-        get => Desc;
-        set => transform.GetChild(2).GetComponent<Text>().text = value;
-    }
 
     int Life
     {
         get => life;
         set {
             life = value;
-            transform.GetChild(3).GetComponent<Text>().text = life.ToString();
+            lifeText.text = life.ToString();
         }
     }
 
@@ -49,7 +36,7 @@ public class Card : MonoBehaviour
         get =>  gold;
         set {
             gold = value;
-            transform.GetChild(4).GetComponent<Text>().text = gold.ToString();
+            goldText.text = gold.ToString();
         }
     }
      int Power
@@ -57,20 +44,24 @@ public class Card : MonoBehaviour
         get =>  power;
         set {
             power = value;
-            transform.GetChild(5).GetComponent<Text>().text = power.ToString();
+            powerText.text = power.ToString();
         }
     }
 
     #endregion
     
+    #region Methods
+
     public void ReceiveStartInfo(CardsInfo info)
     {
         cardId = info.cardId;
         Life = info.life;
         Gold = info.gold;
         Power = info.power;
-        Design = info.design;
-        Name = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].name;
-        Desc = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].description;
+        design.sprite = info.design;
+        nameText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].name;
+        descText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].description;
     }
+
+    #endregion
 }

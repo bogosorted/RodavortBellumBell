@@ -18,11 +18,12 @@ public class HandBehaviour : MonoBehaviour
     
     [Header("Hand Card Settings")]
     [SerializeField] float handAnimationSpeed;  
-    [SerializeField] float handXAxisWidth,MaxHandAngle,handCardSize,handSizeIncreaseValue,showingHandSize;
+    [SerializeField] float handXAxisWidth,maxHandAngle,handSizeIncreaseValue,maxShowingAngle;
     [SerializeField] Vector2 handOffset,showingHandOffset;
+    public float showingHandSize,handCardSize;
     
-    Coroutine handSizeCurrentCoroutine,organizeHandCurrentCoroutine;
-  //  void Start() => ((RectTransform)transform).anchoredPosition += handOffset; 
+    Coroutine organizeHandCurrentCoroutine;
+
 
     void Update()
     {
@@ -53,28 +54,32 @@ public class HandBehaviour : MonoBehaviour
         
     }
    
-    void SetCardsPosition(Vector2 offSet)
+    void SetCardsPosition(Vector2 offSet,float angulation)
     {
         RectTransform rectCard;
         float WidthConst = handXAxisWidth/ (hand.Count - 1);
         float concat = -handXAxisWidth;
+        int index = 0;
 
         foreach(Card card in hand)
         {          
+            card.posInHand = index;
             rectCard = card.transform.parent as RectTransform;
 
             card.startPosition = rectCard.anchoredPosition;
             card.finalPosition = new Vector2((hand.Count != 1 ? concat * offSet.x : 0) + offSet.x, offSet.y);
 
-            card.startSize = rectCard.localScale;
+            
 
             //ROTATE ONLY THE IMAGE AND NOT THE GRAPHIC_COLLIDER
             rectCard = card.transform as RectTransform;
 
+            card.startSize = rectCard.localScale;
             card.startAngle = rectCard.transform.rotation;
-            card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth)* MaxHandAngle:0);
+            card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth) * angulation : 0);
 
             concat += WidthConst * 2;   
+            index ++;
         }
     }
 
@@ -102,7 +107,7 @@ public class HandBehaviour : MonoBehaviour
 
             rectCard.transform.rotation = Quaternion.Lerp(card.startAngle,card.finalAngle,y);
             rectCard.anchoredPosition = Vector3.Lerp(card.startPosition,finalPositionWithCurve,y);
-            rectCard.localScale = Vector3.one * ((y+1)/2)* sizeInitShowCard;
+            rectCard.GetChild(0).localScale = Vector3.one * ((y+1)/2)* sizeInitShowCard;
 
             yield return null;
         }   
@@ -114,20 +119,18 @@ public class HandBehaviour : MonoBehaviour
         handXAxisWidth += (hand.Count-1) * handSizeIncreaseValue;
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        if (handSizeCurrentCoroutine != null){StopCoroutine(handSizeCurrentCoroutine);}
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
 
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset));
-        handSizeCurrentCoroutine = StartCoroutine(ChangeHandSize(handCardSize));
+        ChangeHandSize(handCardSize,hand);
     }
     
-    IEnumerator OrganizeHand(Vector2 offSet)
+    IEnumerator OrganizeHand(Vector2 offSet,float angulation)
     {
         RectTransform rectCard;
         float x,y;
         x = 0;
-
         
-        SetCardsPosition(offSet);
+        SetCardsPosition(offSet,angulation);
 
         while(x<=1)
         {
@@ -147,39 +150,37 @@ public class HandBehaviour : MonoBehaviour
         }
     }
 
-    IEnumerator ChangeHandSize(float size)
+    void ChangeHandSize(float size,List<Card> pHand)
     {
-        RectTransform rectCard;
-        float x,y;
-        x = 0;
-        while(x <= 1)
-        { 
-            x += (initCardAnimationSpeed * Time.deltaTime);
-            y = -x * x + 2 * x;
-            
-            foreach(Card card in hand)
-            { 
-                rectCard = card.transform.parent as RectTransform;
-                rectCard.localScale = Vector3.one * Mathf.Lerp(card.startSize.x,size,y);
-            }      
-            yield return null;
-        }       
+      
+        for(int i = 0;i < pHand.Count;i++)
+        {       
+            pHand[i].ChangeSize(size,handAnimationSpeed);
+        }      
+             
     }
     public void ShowAmplifiedHand()
     {
-        if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        if (handSizeCurrentCoroutine != null){StopCoroutine(handSizeCurrentCoroutine);}       
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandOffset));
-        handSizeCurrentCoroutine = StartCoroutine(ChangeHandSize(showingHandSize));
+        if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}     
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandOffset,maxShowingAngle));
+
+        ChangeHandSize(showingHandSize,hand);
 
     }
     public void StopShowingAmplifiedHand()
     {
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        if (handSizeCurrentCoroutine != null){StopCoroutine(handSizeCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset));
-        handSizeCurrentCoroutine = StartCoroutine(ChangeHandSize(handCardSize));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
+
+        ChangeHandSize(handCardSize,hand);
+    }
+    public void SetHandRaycast(bool condition)
+    {
+        foreach(Card card in hand)
+        {
+            card.SetRaycastGraphic(condition);
+        }
     }
 
     // organizar cartas 

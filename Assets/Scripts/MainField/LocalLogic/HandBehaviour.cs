@@ -94,6 +94,7 @@ public class HandBehaviour : MonoBehaviour
 
         card.startAngle = Quaternion.Euler(0,90,90);
         card.finalAngle = Quaternion.identity;
+       
 
         x = 0;
         while (x <= 1)
@@ -119,9 +120,20 @@ public class HandBehaviour : MonoBehaviour
         handXAxisWidth += (hand.Count-1) * handSizeIncreaseValue;
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
+        
+        if(transform.GetComponent<HandBoardInput>().active)
+        {
+            ShowAmplifiedHand();
+            SetHandRaycast(true);
+        }
+        else
+        {
+            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
+            ChangeHandSize(handCardSize,hand);
+        }
 
-        ChangeHandSize(handCardSize,hand);
+
+        
     }
     
     IEnumerator OrganizeHand(Vector2 offSet,float angulation)

@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
 
     uint cardId;
     int life,gold,power;
+   
+    Coroutine changeSizeAnimation;
 
     [Header("UI card references")]
     [SerializeField] Image design;
@@ -17,6 +19,7 @@ public class Card : MonoBehaviour
     [HideInInspector] public Vector2 startSize;
     [HideInInspector] public Vector2 startPosition,finalPosition;
     [HideInInspector] public Quaternion startAngle,finalAngle;
+    [HideInInspector] public int posInHand;
 
     #endregion
 
@@ -62,6 +65,29 @@ public class Card : MonoBehaviour
         nameText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].name;
         descText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].description;
     }
+    public void ChangeSize(float size,float animationSpeed)
+    {
+        if (changeSizeAnimation != null){StopCoroutine(changeSizeAnimation);}
+            changeSizeAnimation = StartCoroutine(SizeAnimation(size,animationSpeed));
+    }
+    public IEnumerator SizeAnimation(float size,float animationSpeed)
+    {
+        RectTransform rectCard;
+        float x,y;
+        x = 0;
+        while(x <= 1)
+        { 
+            x += (animationSpeed * Time.deltaTime);
+            y = -x * x + 2 * x;
+            rectCard = transform as RectTransform;
+            rectCard.localScale = Vector3.one * Mathf.Lerp(startSize.x,size,y); 
 
+            yield return null;
+        }       
+    }
+    public void SetRaycastGraphic(bool condition)
+    {
+        transform.parent.GetComponent<Image>().raycastTarget = condition;
+    }
     #endregion
 }

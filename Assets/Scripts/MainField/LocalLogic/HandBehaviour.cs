@@ -24,7 +24,13 @@ public class HandBehaviour : MonoBehaviour
     
     Coroutine organizeHandCurrentCoroutine;
 
+    //the card only its added on final animation of initialized
+    // that is the accurate hand.count
+    int handActualCount;
 
+    void Awake()
+    {
+    }
     void Update()
     {
         //test will be removed on realese
@@ -37,23 +43,40 @@ public class HandBehaviour : MonoBehaviour
 
     void CreateCard(int index)
     { 
-        CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
+        if(handActualCount < MaxCardInHand)
+        {
+            handActualCount++;
+            CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
 
-        GameObject refCard = Instantiate(cardPrefab,this.transform);
-        Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
-      
-        newCard.ReceiveStartInfo(cardInfo);
-        newCard.startPosition = startPosInitialCard;
-        newCard.finalPosition = finalPosInitialCard;
+            GameObject refCard = Instantiate(cardPrefab,this.transform);
+            Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
+        
+            newCard.ReceiveStartInfo(cardInfo);
+            newCard.startPosition = startPosInitialCard;
+            newCard.finalPosition = finalPosInitialCard;
+        
+            StartCoroutine(ShowInitializedCard(newCard));
+        }    
+    }
 
-        
-        
-        StartCoroutine(ShowInitializedCard(newCard));   
-        // hand.Add(newCard);
-        // StartCoroutine(OrganizeHand());
+    public void AddCard(int cardPosInHand,Card card)
+    {
+        hand.Insert(cardPosInHand,card);
+        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+
+        if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
+
+        ChangeHandSize(handCardSize,hand);   
+    }
+    public void RemoveCard(int cardPosInHand)
+    {
+        hand.RemoveAt(cardPosInHand);
+        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
         
     }
-   
+
+
     void SetCardsPosition(Vector2 offSet,float angulation)
     {
         RectTransform rectCard;
@@ -67,14 +90,13 @@ public class HandBehaviour : MonoBehaviour
             rectCard = card.transform.parent as RectTransform;
 
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition = new Vector2((hand.Count != 1 ? concat * offSet.x : 0) + offSet.x, offSet.y);
+            card.finalPosition = new Vector2((hand.Count != 1 ? concat * offSet.x : 0) + offSet.x, offSet.y + (-Mathf.Abs(concat)/(angulation*15)));
 
-            
+            card.transform.parent.SetSiblingIndex(card.posInHand);
 
             //ROTATE ONLY THE IMAGE AND NOT THE GRAPHIC_COLLIDER
             rectCard = card.transform as RectTransform;
 
-            card.startSize = rectCard.localScale;
             card.startAngle = rectCard.transform.rotation;
             card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth) * angulation : 0);
 
@@ -117,23 +139,20 @@ public class HandBehaviour : MonoBehaviour
 
         hand.Add(card);
         
-        handXAxisWidth += (hand.Count-1) * handSizeIncreaseValue;
+        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(transform.GetComponent<HandBoardInput>().active)
+        if(transform.GetComponent<HandBoardInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
-            SetHandRaycast(true);
+            SetCardsHandRaycast(true);
         }
         else
         {
             organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle));
             ChangeHandSize(handCardSize,hand);
-        }
-
-
-        
+        }      
     }
     
     IEnumerator OrganizeHand(Vector2 offSet,float angulation)
@@ -187,7 +206,7 @@ public class HandBehaviour : MonoBehaviour
 
         ChangeHandSize(handCardSize,hand);
     }
-    public void SetHandRaycast(bool condition)
+    public void SetCardsHandRaycast(bool condition)
     {
         foreach(Card card in hand)
         {

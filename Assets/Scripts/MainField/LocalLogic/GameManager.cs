@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {   
     [Header("Players Managers")]
-    [SerializeField] PlayerManager currentPlayer;
-    [SerializeField] PlayerManager adversaryPlayer;
+    [SerializeField] PlayerBehaviour currentPlayer;
+    [SerializeField] PlayerBehaviour adversaryPlayer;
     //sistema de turnos
     
 

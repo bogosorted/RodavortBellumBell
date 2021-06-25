@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +10,13 @@ public class Card : MonoBehaviour
     uint cardId;
     int life,gold,power;
    
+    Vector2 startSize;
     Coroutine changeSizeAnimation;
-
+    
     [Header("UI card references")]
     [SerializeField] Image design;
     [SerializeField] Text nameText,descText,lifeText,goldText,powerText;
-     
-    [HideInInspector] public Vector2 startSize;
+
     [HideInInspector] public Vector2 startPosition,finalPosition;
     [HideInInspector] public Quaternion startAngle,finalAngle;
     [HideInInspector] public int posInHand;
@@ -67,6 +67,7 @@ public class Card : MonoBehaviour
     }
     public void ChangeSize(float size,float animationSpeed)
     {
+        startSize = transform.GetComponent<RectTransform>().localScale;
         if (changeSizeAnimation != null){StopCoroutine(changeSizeAnimation);}
             changeSizeAnimation = StartCoroutine(SizeAnimation(size,animationSpeed));
     }

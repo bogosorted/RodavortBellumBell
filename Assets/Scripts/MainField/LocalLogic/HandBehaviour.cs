@@ -20,6 +20,8 @@ public class HandBehaviour : MonoBehaviour
     [SerializeField] float handAnimationSpeed;  
     [SerializeField] float handXAxisWidth,maxHandAngle,handSizeIncreaseValue,maxShowingAngle;
     [SerializeField] Vector2 handOffset,showingHandOffset;
+
+    [Header("Public Variables")]
     public float showingHandSize,handCardSize;
     
     Coroutine organizeHandCurrentCoroutine;

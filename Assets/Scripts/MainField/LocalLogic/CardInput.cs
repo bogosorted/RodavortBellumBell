@@ -34,9 +34,13 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        playerHand.AddCard(actualCard.posInHand,actualCard);
-        transform.SetSiblingIndex(actualCard.posInHand);
-        handBoard.SetHandRaycast(true);
+        if(eventData.hovered.Count>0)
+            foreach(var objects in eventData.hovered)
+                print((objects.gameObject.tag == "PlayerBoard") ? true: false);
+
+            playerHand.AddCard(actualCard.posInHand,actualCard);
+            transform.SetSiblingIndex(actualCard.posInHand);
+            handBoard.SetHandRaycast(true);
        
     }
 

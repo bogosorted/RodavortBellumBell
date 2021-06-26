@@ -8,30 +8,43 @@ public class HandBoardInput : MonoBehaviour ,IPointerExitHandler, IPointerEnterH
 {
 
   [SerializeField] HandBehaviour playerHand;
-  RectTransform rect;
-  public bool pointerOnBoard;
 
-  void Awake()=> rect = transform as RectTransform;
+  [Header("Collider Attributes")]
+  [SerializeField] Vector2 normalColliderSize;
+  [SerializeField] Vector2 OnPointerColliderSize;
+
+  [HideInInspector] public bool pointerOnBoard;
+
+  RectTransform rect;
+
+  void Awake()
+  {
+    rect = transform as RectTransform;
+    ChangeColliderSize(normalColliderSize);
+  }
+
 
   public void OnPointerEnter(PointerEventData eventData)
   {
     pointerOnBoard = true;
-    rect.sizeDelta = new Vector2(540,375);
+
+    ChangeColliderSize(OnPointerColliderSize);
+
     playerHand.ShowAmplifiedHand();
-    playerHand.SetCardsHandRaycast(true);
+    playerHand.SetCardsHandRaycast(pointerOnBoard);
+
   }
   public void OnPointerExit(PointerEventData eventData)
   {
     pointerOnBoard = false;
-    rect.sizeDelta = new Vector2(540,200);
-    playerHand.SetCardsHandRaycast(false);
+
+    ChangeColliderSize(normalColliderSize);
+
+    playerHand.SetCardsHandRaycast(pointerOnBoard);
     playerHand.StopShowingAmplifiedHand();
    
   }
-  public void SetHandRaycast(bool statement)
-  {
-    GetComponent<Image>().raycastTarget = statement;
-  }
+  public void SetHandRaycast(bool statement) => GetComponent<Image>().raycastTarget = statement;
 
-  
+  private void ChangeColliderSize(Vector2 size) => rect.sizeDelta = size;
 }

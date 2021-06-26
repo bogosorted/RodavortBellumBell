@@ -47,17 +47,21 @@ public class HandBehaviour : MonoBehaviour
     { 
         if(handActualCount < MaxCardInHand)
         {
+
             handActualCount++;
+
             CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
 
             GameObject refCard = Instantiate(cardPrefab,this.transform);
             Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
         
             newCard.ReceiveStartInfo(cardInfo);
+            
             newCard.startPosition = startPosInitialCard;
             newCard.finalPosition = finalPosInitialCard;
         
             StartCoroutine(ShowInitializedCard(newCard));
+            
         }    
     }
 
@@ -109,33 +113,14 @@ public class HandBehaviour : MonoBehaviour
 
      IEnumerator ShowInitializedCard(Card card)
     {
-        RectTransform rectCard = card.transform.parent as RectTransform;
-        Vector3 finalPositionWithCurve;
-        float curvePosX,curvePosY;
-        
         //x its constant, y its smooth. both are 1 when the another be 1
-        float x,y;
 
         card.startAngle = Quaternion.Euler(0,90,90);
         card.finalAngle = Quaternion.identity;
        
 
-        x = 0;
-        while (x <= 1)
-        {          
-            x += (initCardAnimationSpeed * Time.deltaTime);
-            y = -x * x + 2 * x;
-
-            curvePosX = (y * - initCardXMaxCurvePos + card.finalPosition.x) + initCardXMaxCurvePos;
-            curvePosY = (y * -initCardYMaxCurvePos + card.finalPosition.y) + initCardYMaxCurvePos;
-            finalPositionWithCurve = new Vector3(curvePosX,curvePosY);
-
-            rectCard.transform.rotation = Quaternion.Lerp(card.startAngle,card.finalAngle,y);
-            rectCard.anchoredPosition = Vector3.Lerp(card.startPosition,finalPositionWithCurve,y);
-            rectCard.GetChild(0).localScale = Vector3.one * ((y+1)/2)* sizeInitShowCard;
-
-            yield return null;
-        }   
+        card.MoveTo(initCardAnimationSpeed,initCardXMaxCurvePos,initCardYMaxCurvePos);
+        card.ChangeSize(showingHandSize,initCardAnimationSpeed);
             
         yield return new WaitForSeconds(initCardShowTime);
 

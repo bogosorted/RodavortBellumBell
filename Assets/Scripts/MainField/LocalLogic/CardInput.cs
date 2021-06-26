@@ -8,44 +8,17 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
 {
 
     [SerializeField] Card actualCard;
-
+    
+    PlayerBehaviour player;
     HandBoardInput handBoard;
     HandBehaviour playerHand;
 
     float handlingCardSize = 0.7f;
     
 
-   public void OnBeginDrag(PointerEventData eventData)
-    {
-        playerHand.SetCardsHandRaycast(false);
-        handBoard.SetHandRaycast(false);
-        GetComponent<Image>().raycastTarget = false;
-        
-        transform.SetAsLastSibling();
-        transform.GetChild(0).rotation = Quaternion.identity;
-
-        actualCard.ChangeSize(handlingCardSize, 2f);
-        playerHand.RemoveCard(actualCard.posInHand);   
-        
-    }
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if(eventData.hovered.Count>0)
-            foreach(var objects in eventData.hovered)
-                print((objects.gameObject.tag == "PlayerBoard") ? true: false);
-
-            playerHand.AddCard(actualCard.posInHand,actualCard);
-            transform.SetSiblingIndex(actualCard.posInHand);
-            handBoard.SetHandRaycast(true);
-       
-    }
-
     void Awake()
     {
+        player = GameObject.Find("Player1").GetComponent<PlayerBehaviour>();
         playerHand = GameObject.Find("PlayerHand").GetComponent<HandBehaviour>();
         handBoard = playerHand.transform.GetComponent<HandBoardInput>();
     }
@@ -65,5 +38,42 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
             if(!handBoard.pointerOnBoard)
                 playerHand.StopShowingAmplifiedHand();
         }
+    }
+
+   public void OnBeginDrag(PointerEventData eventData)
+    {
+        playerHand.SetCardsHandRaycast(false);
+        handBoard.SetHandRaycast(false);
+        GetComponent<Image>().raycastTarget = false;
+        
+        transform.SetAsLastSibling();
+        transform.GetChild(0).rotation = Quaternion.identity;
+
+        actualCard.ChangeSize(handlingCardSize, 2f);
+        playerHand.RemoveCard(actualCard.posInHand);   
+        
+    }
+    public void OnDrag(PointerEventData eventData) => transform.position = Input.mousePosition;
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if(eventData.hovered.Count>0)
+        {
+            foreach(var parents in eventData.hovered)
+                if(parents.gameObject.tag == "PlayerBoard")
+                {
+                    player.TryPutCardOnBoard(actualCard);
+                    return;
+                }
+
+        }
+
+          ReturnCardToHand();
+     
+    }
+    void ReturnCardToHand()
+    {
+        playerHand.AddCard(actualCard.posInHand,actualCard);
+        transform.SetSiblingIndex(actualCard.posInHand);
+        handBoard.SetHandRaycast(true);
     }
 }

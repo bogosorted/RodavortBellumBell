@@ -232,15 +232,17 @@ MonoBehaviour:
   sizeInitShowCard: 1.2
   initCardYMaxCurvePos: 750
   initCardXMaxCurvePos: 700
+  maxShowingAngle: 1
   startPosInitialCard: {x: 580, y: 200}
   finalPosInitialCard: {x: 0, y: 560}
+  showingHandWidthMultiplier: 3.5
   handAnimationSpeed: 2
   handXAxisWidth: 50
   maxHandAngle: 4
   handSizeIncreaseValue: 15
-  maxShowingAngle: 1
-  handOffset: {x: 1, y: 15}
-  showingHandOffset: {x: 3.5, y: 180}
+  handOffset: {x: 0, y: 15}
+  showingHandOffset: {x: 0, y: 180}
+  handWidthMultiplier: 1
   showingHandSize: 1.05
   handCardSize: 0.5
 --- !u!1 &519420028

@@ -12,6 +12,7 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
     PlayerBehaviour player;
     HandBoardInput handBoard;
     HandBehaviour playerHand;
+    
 
     float handlingCardSize = 0.7f;
     
@@ -21,6 +22,7 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
         player = GameObject.Find("Player1").GetComponent<PlayerBehaviour>();
         playerHand = GameObject.Find("PlayerHand").GetComponent<HandBehaviour>();
         handBoard = playerHand.transform.GetComponent<HandBoardInput>();
+      
     }
     public void OnPointerEnter(PointerEventData eventData)
     {   
@@ -62,6 +64,10 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
                 if(parents.gameObject.tag == "PlayerBoard")
                 {
                     player.TryPutCardOnBoard(actualCard);
+
+                    playerHand.SetCardsHandRaycast(true);
+                    handBoard.SetHandRaycast(true);
+
                     return;
                 }
 

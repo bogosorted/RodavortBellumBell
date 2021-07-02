@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class HandBehaviour : MonoBehaviour
 {
     List<Card> hand = new List<Card>();
-    List<Card> handOnBoard = new List<Card>();
 
     const int MaxCardInHand = 10;
+
     [SerializeField] GameObject cardPrefab;
 
     [Header("Initial Created Card Settings")]
@@ -35,14 +35,15 @@ public class HandBehaviour : MonoBehaviour
 
     void Awake()
     {
+        CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
     }
     void Update()
     {
         //test will be removed on realese
-        if(Input.GetButtonDown("Fire1"))
-        {
-            CreateCard(0);
-        }   
+        // if(Input.GetButtonDown("Fire1"))
+        // {
+        //     CreateCard(0);
+        // }   
         
     }
 

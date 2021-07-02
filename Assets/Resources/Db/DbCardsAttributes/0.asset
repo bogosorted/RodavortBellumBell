@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0
   m_EditorClassIdentifier: 
   cardId: 0
-  design: {fileID: 21300000, guid: 5ca061bc3b40020429e0a70c90e49949, type: 3}
+  design: {fileID: 21300000, guid: be7f772443507be4b989f5a72e4aa8f5, type: 3}
   gold: 4
   life: 6
   power: 3

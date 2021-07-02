@@ -10,7 +10,7 @@ public class CardAnimation : MonoBehaviour
     [SerializeField] Material dissolveMaterial;
     [SerializeField] float dissolveAnimSpeed;
 
-    IEnumerator Dissolve(bool inOut)
+    public IEnumerator Dissolve(bool inOut)
     {
         card.design.material = new Material(dissolveMaterial);
         card.backgroundImage.material = new Material(dissolveMaterial);
@@ -32,7 +32,13 @@ public class CardAnimation : MonoBehaviour
             SetAlphaUIElements(x);
 
             yield return null;
-        }
+        };
+        OnEndDissolveAnimation(inOut);
+    }
+    public void OnEndDissolveAnimation(bool inOut)
+    {
+        if(!inOut)
+            Destroy(transform.parent.gameObject);
     }
 
     void SetAlpha<T>(T graphic, float alpha)

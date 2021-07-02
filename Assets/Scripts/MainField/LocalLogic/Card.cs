@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
     uint cardId;
     int life, gold, power;
 
+    public CardsInfo initialInfo;
+
     Vector2 startSize;
     Coroutine changeSizeAnimation, moveToAnimation;
 
@@ -24,6 +26,11 @@ public class Card : MonoBehaviour
 
 
     #endregion
+
+    Card(Card card)
+    {
+      
+    }
 
     #region Properties
 
@@ -62,13 +69,17 @@ public class Card : MonoBehaviour
 
     public void ReceiveStartInfo(CardsInfo info)
     {
+        initialInfo = info;
+
         cardId = info.cardId;
         Life = info.life;
         Gold = info.gold;
         Power = info.power;
         design.sprite = info.design;
+
         nameText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].name;
         descText.text = JsonReader.ReceiveLenguageTexts(UserPrefs.lenguage).cards[cardId].description;
+
     }
     public void ChangeSize(float size, float animationSpeed)
     {

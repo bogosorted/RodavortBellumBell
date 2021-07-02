@@ -10,17 +10,6 @@ public class CardAnimation : MonoBehaviour
     [SerializeField] Material dissolveMaterial;
     [SerializeField] float dissolveAnimSpeed;
 
-    void Start()
-    {
-        StartCoroutine(Dissolve(false));
-    }
-
-    void Update()
-    {
-    }
-
-
-
     IEnumerator Dissolve(bool inOut)
     {
         card.design.material = new Material(dissolveMaterial);

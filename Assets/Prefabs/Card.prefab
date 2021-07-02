@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3335529905997808476}
   - component: {fileID: 4148754234149528957}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Desc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.89411765}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.9372549}
   m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 1
 --- !u!1 &2301914377867227003
@@ -272,6 +272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2301914377867227002}
   - component: {fileID: 2301914377867227007}
+  - component: {fileID: 5655581538848291194}
   - component: {fileID: 2301914377867227004}
   - component: {fileID: 2301914377867227005}
   m_Layer: 5
@@ -320,6 +321,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   design: {fileID: 2301914378090973583}
+  backgroundImage: {fileID: 2301914377867227005}
+  imageShadow: {fileID: 8548169735032068611}
+  descShadow: {fileID: 2011039530676331909}
   nameText: {fileID: 2301914377387510882}
   descText: {fileID: 3335529905997808476}
   lifeText: {fileID: 6512057314456393397}
@@ -330,6 +334,21 @@ MonoBehaviour:
   startAngle: {x: 0, y: 0, z: 0, w: 0}
   finalAngle: {x: 0, y: 0, z: 0, w: 0}
   posInHand: 0
+--- !u!114 &5655581538848291194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301914377867227003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef103eb62138a24c8eefca6bf011300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 2301914377867227007}
+  dissolveMaterial: {fileID: 2100000, guid: 997bc960ef433c144885a0ee4eb88626, type: 2}
+  dissolveAnimSpeed: 1
 --- !u!222 &2301914377867227004
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -807,7 +826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.30980393, g: 0.17254902, b: 0.03529412, a: 1}
   m_EffectDistance: {x: 2, y: -1}
-  m_UseGraphicAlpha: 0
+  m_UseGraphicAlpha: 1
 --- !u!1 &7917300913872854603
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +862,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59, y: -45}
+  m_AnchoredPosition: {x: 52, y: -45}
   m_SizeDelta: {x: 66, y: 39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1886148393554629360

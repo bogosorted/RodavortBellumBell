@@ -114,7 +114,7 @@ public class HandBehaviour : MonoBehaviour
         }
     }
 
-     IEnumerator ShowInitializedCard(Card card)
+    IEnumerator ShowInitializedCard(Card card)
     {
         //x its constant, y its smooth. both are 1 when the another be 1
 

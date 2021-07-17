@@ -27,14 +27,34 @@ public class HandBehaviour : MonoBehaviour
     [Header("Public Variables")]
     public float showingHandSize,handCardSize;
     
+    HandAnimationSettings playerHandAnimation,showingHandAnimation;
     Coroutine organizeHandCurrentCoroutine;
 
     //the card only its added on final animation of initialized
     // that is the accurate hand.count
     int handActualCount;
 
+    public struct HandAnimationSettings
+    {
+        public HandAnimationSettings(Vector2 offSet,float angulation,float widthMultiplier,bool playerHand)
+        {
+            OffSet = offSet;
+            Angulation = angulation;
+            WidthMultiplier = widthMultiplier;
+            PlayerHand = playerHand;
+        }
+
+        public Vector2 OffSet{get;}
+        public float Angulation{get;}
+        public float WidthMultiplier{get;}
+        public bool PlayerHand{get;}
+    }
+
+
     void Awake()
     {
+        playerHandAnimation = new HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,true);
+        showingHandAnimation = new HandAnimationSettings(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier,true);
         CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
     }
     void Update()
@@ -75,7 +95,7 @@ public class HandBehaviour : MonoBehaviour
         handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
 
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle,handWidthMultiplier));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
 
         ChangeHandSize(handCardSize,hand);   
     }
@@ -86,8 +106,7 @@ public class HandBehaviour : MonoBehaviour
         
     }
 
-
-    void SetCardsPosition(Vector2 offSet,float angulation,float widthMultiplier)
+    void SetCardsPosition(HandAnimationSettings animSett)
     {
         RectTransform rectCard;
         float WidthConst = handXAxisWidth/ (hand.Count - 1);
@@ -100,7 +119,7 @@ public class HandBehaviour : MonoBehaviour
             rectCard = card.transform.parent as RectTransform;
 
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition = new Vector2((hand.Count != 1 ? (concat * widthMultiplier) + offSet.x : 0) , offSet.y + (-Mathf.Abs(concat)/(angulation*15)));
+            card.finalPosition = new Vector2((hand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0) , animSett.OffSet.y + (-Mathf.Abs(concat)/(animSett.Angulation*15)));
 
             card.transform.parent.SetSiblingIndex(card.posInHand);
 
@@ -108,7 +127,7 @@ public class HandBehaviour : MonoBehaviour
             rectCard = card.transform as RectTransform;
 
             card.startAngle = rectCard.transform.rotation;
-            card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth) * angulation : 0);
+            card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth) * animSett.Angulation : 0);
 
             concat += WidthConst * 2;   
             index ++;
@@ -141,18 +160,18 @@ public class HandBehaviour : MonoBehaviour
         }
         else
         {
-            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle,handWidthMultiplier));
+            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
             ChangeHandSize(handCardSize,hand);
         }      
     }
     
-    IEnumerator OrganizeHand(Vector2 offSet,float angulation,float widthMultiplier)
+    IEnumerator OrganizeHand(HandAnimationSettings animSett)
     {
         RectTransform rectCard;
         float x,y;
         x = 0;
         
-        SetCardsPosition(offSet,angulation,widthMultiplier);
+        SetCardsPosition(animSett);
 
         while(x<=1)
         {
@@ -184,7 +203,7 @@ public class HandBehaviour : MonoBehaviour
     public void ShowAmplifiedHand()
     {
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}     
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandAnimation));
 
         ChangeHandSize(showingHandSize,hand);
 
@@ -193,7 +212,7 @@ public class HandBehaviour : MonoBehaviour
     {
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(handOffset,maxHandAngle,handWidthMultiplier));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
 
         ChangeHandSize(handCardSize,hand);
     }

@@ -36,34 +36,36 @@ public class HandBehaviour : MonoBehaviour
 
     public struct HandAnimationSettings
     {
-        public HandAnimationSettings(Vector2 offSet,float angulation,float widthMultiplier,bool playerHand)
+        public HandAnimationSettings(Vector2 offSet,float angulation,float widthMultiplier,float handXWidth,bool playerHand)
         {
             OffSet = offSet;
             Angulation = angulation;
             WidthMultiplier = widthMultiplier;
+            HandXAxisWidth = handXWidth;
             PlayerHand = playerHand;
         }
 
         public Vector2 OffSet{get;}
         public float Angulation{get;}
         public float WidthMultiplier{get;}
+        public float HandXAxisWidth{get;set;}
         public bool PlayerHand{get;}
     }
 
 
     void Awake()
     {
-        playerHandAnimation = new HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,true);
-        showingHandAnimation = new HandAnimationSettings(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier,true);
-        CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
+        playerHandAnimation = new HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
+        showingHandAnimation = new HandAnimationSettings(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier,handXAxisWidth,true);
+        CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
     }
     void Update()
     {
-        //test will be removed on realese
-        // if(Input.GetButtonDown("Fire1"))
-        // {
-        //     CreateCard(0);
-        // }   
+     //   test will be removed on realese
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            CreateCard(0);
+        }   
         
     }
 
@@ -92,34 +94,34 @@ public class HandBehaviour : MonoBehaviour
     public void AddCard(int cardPosInHand,Card card)
     {
         hand.Insert(cardPosInHand,card);
-        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+
+        playerHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
 
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
 
         ChangeHandSize(handCardSize,hand);   
     }
     public void RemoveCard(int cardPosInHand)
     {
         hand.RemoveAt(cardPosInHand);
-        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
-        
+        playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
     }
 
-    void SetCardsPosition(HandAnimationSettings animSett)
+    void SetCardsPosition(HandAnimationSettings animSett,List<Card> paramHand)
     {
         RectTransform rectCard;
-        float WidthConst = handXAxisWidth/ (hand.Count - 1);
-        float concat = -handXAxisWidth;
+        float WidthConst = animSett.HandXAxisWidth/ (paramHand.Count - 1);
+        float concat = -animSett.HandXAxisWidth;
         int index = 0;
 
-        foreach(Card card in hand)
+        foreach(Card card in paramHand)
         {          
             card.posInHand = index;
             rectCard = card.transform.parent as RectTransform;
 
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition = new Vector2((hand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0) , animSett.OffSet.y + (-Mathf.Abs(concat)/(animSett.Angulation*15)));
+            card.finalPosition = new Vector2((paramHand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0) , animSett.OffSet.y + (-Mathf.Abs(concat)/(animSett.Angulation*15)));
 
             card.transform.parent.SetSiblingIndex(card.posInHand);
 
@@ -127,7 +129,7 @@ public class HandBehaviour : MonoBehaviour
             rectCard = card.transform as RectTransform;
 
             card.startAngle = rectCard.transform.rotation;
-            card.finalAngle = Quaternion.Euler(0,0,hand.Count > 2 ?(-concat/handXAxisWidth) * animSett.Angulation : 0);
+            card.finalAngle = Quaternion.Euler(0,0,paramHand.Count > 2 ?(-concat/animSett.HandXAxisWidth) * animSett.Angulation : 0);
 
             concat += WidthConst * 2;   
             index ++;
@@ -149,7 +151,7 @@ public class HandBehaviour : MonoBehaviour
 
         hand.Add(card);
         
-        handXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+        playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
@@ -160,25 +162,25 @@ public class HandBehaviour : MonoBehaviour
         }
         else
         {
-            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
+            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
             ChangeHandSize(handCardSize,hand);
         }      
     }
     
-    IEnumerator OrganizeHand(HandAnimationSettings animSett)
+    public IEnumerator OrganizeHand(HandAnimationSettings animSett,List<Card> paramHand)
     {
         RectTransform rectCard;
         float x,y;
         x = 0;
         
-        SetCardsPosition(animSett);
+        SetCardsPosition(animSett,paramHand);
 
         while(x<=1)
         {
             x += (handAnimationSpeed * Time.deltaTime);
             y = -x * x + 2 * x;
            
-            foreach(Card card in hand)
+            foreach(Card card in paramHand)
             { 
                 rectCard = card.transform.parent as RectTransform;
                 rectCard.anchoredPosition = Vector3.Lerp(card.startPosition,card.finalPosition,y);
@@ -191,19 +193,19 @@ public class HandBehaviour : MonoBehaviour
         }
     }
 
-    void ChangeHandSize(float size,List<Card> pHand)
+    void ChangeHandSize(float size,List<Card> paramHand)
     {
       
-        for(int i = 0;i < pHand.Count;i++)
+        for(int i = 0;i < paramHand.Count;i++)
         {       
-            pHand[i].ChangeSize(size,handAnimationSpeed);
+            paramHand[i].ChangeSize(size,handAnimationSpeed);
         }      
              
     }
     public void ShowAmplifiedHand()
     {
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}     
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandAnimation));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandAnimation,hand));
 
         ChangeHandSize(showingHandSize,hand);
 
@@ -212,7 +214,7 @@ public class HandBehaviour : MonoBehaviour
     {
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
 
         ChangeHandSize(handCardSize,hand);
     }

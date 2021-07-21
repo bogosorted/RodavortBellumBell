@@ -61,7 +61,7 @@ public class HandBehaviour : MonoBehaviour
     }
     void Update()
     {
-     //   test will be removed on realese
+        //test will be removed on realese
         if(Input.GetKeyDown(KeyCode.Z))
         {
             CreateCard(0);
@@ -95,7 +95,7 @@ public class HandBehaviour : MonoBehaviour
     {
         hand.Insert(cardPosInHand,card);
 
-        playerHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+         playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
 
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
@@ -155,7 +155,7 @@ public class HandBehaviour : MonoBehaviour
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(transform.GetComponent<HandBoardInput>().pointerOnBoard)
+        if(transform.parent.GetComponent<HandBoardInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
             SetCardsHandRaycast(true);

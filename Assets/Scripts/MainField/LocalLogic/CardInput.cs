@@ -19,9 +19,9 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
 
     void Awake()
     {
-        player = GameObject.Find("Player1").GetComponent<PlayerBehaviour>();
-        playerHand = GameObject.Find("PlayerHand").transform.GetChild(1).GetComponent<HandBehaviour>();
-        handBoard = playerHand.transform.parent.GetComponent<HandBoardInput>();
+        player = GameObject.Find("Player").GetComponent<PlayerBehaviour>();
+        playerHand = GameObject.Find("PlayerHand").GetComponent<HandBehaviour>();
+        handBoard = playerHand.GetComponent<HandBoardInput>();
       
     }
     public void OnPointerEnter(PointerEventData eventData)

@@ -349,7 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card: {fileID: 2301914377867227007}
   dissolveMaterial: {fileID: 2100000, guid: 997bc960ef433c144885a0ee4eb88626, type: 2}
-  dissolveAnimSpeed: 1.4
+  dissolveAnimSpeed: 1.2
 --- !u!222 &2301914377867227004
 CanvasRenderer:
   m_ObjectHideFlags: 0

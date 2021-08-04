@@ -52,6 +52,6 @@ public class HandBoardBehaviour : MonoBehaviour
 
         concat += handCount != 1 ? WidthConst * 2 * handCount : 0;
         
-        return  new Vector2((handCount != 1 ? (concat * boardAnimation.WidthMultiplier) + boardAnimation.OffSet.x - 50 : 0) ,boardAnimation.OffSet.y + (-Mathf.Abs(concat)/(boardAnimation.Angulation*15)));
+        return  new Vector2((handCount != 1 ? (concat * boardAnimation.WidthMultiplier) + boardAnimation.OffSet.x - 60 : 0) ,boardAnimation.OffSet.y + (-Mathf.Abs(concat)/(boardAnimation.Angulation*15)));
     }
 }

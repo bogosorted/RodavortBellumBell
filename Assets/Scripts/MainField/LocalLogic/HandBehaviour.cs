@@ -10,6 +10,7 @@ public class HandBehaviour : MonoBehaviour
     const int MaxCardInHand = 10;
 
     [SerializeField] GameObject cardPrefab;
+    [SerializeField] GameObject cardInHand;
 
     [Header("Initial Created Card Settings")]
     [SerializeField] float initCardAnimationSpeed;
@@ -55,9 +56,12 @@ public class HandBehaviour : MonoBehaviour
 
     void Awake()
     {
+        
         playerHandAnimation = new HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
         showingHandAnimation = new HandAnimationSettings(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier,handXAxisWidth,true);
+        
         CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
+
     }
     void Update()
     {
@@ -78,7 +82,7 @@ public class HandBehaviour : MonoBehaviour
 
             CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
 
-            GameObject refCard = Instantiate(cardPrefab,this.transform);
+            GameObject refCard = Instantiate(cardPrefab,cardInHand.transform);
             Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
         
             newCard.ReceiveStartInfo(cardInfo);
@@ -155,7 +159,7 @@ public class HandBehaviour : MonoBehaviour
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(transform.parent.GetComponent<HandBoardInput>().pointerOnBoard)
+        if(GetComponent<HandBoardInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
             SetCardsHandRaycast(true);

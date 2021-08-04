@@ -12,8 +12,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void TryPutCardOnBoard(Card card)
     {
-            
-        //if aceppt
+        //if server receive
+        if(true)
+        {
             RectTransform rectCard = card.transform.parent as RectTransform;
             RectTransform rectBoard = board.transform as RectTransform;
             CardAnimation cardAnim = card.GetComponent<CardAnimation>();
@@ -35,7 +36,8 @@ public class PlayerBehaviour : MonoBehaviour
             card.finalAngle = Quaternion.identity;
              
             card.MoveTo(1,0,0);
-            card.ChangeSize(0.4485f,2);
+            card.ChangeSize(0.4985f,2);
+        }
 
     }
     void TryAttackCard()

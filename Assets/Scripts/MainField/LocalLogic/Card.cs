@@ -9,6 +9,7 @@ public class Card : MonoBehaviour
     uint cardId;
     int life, gold, power;
 
+    [HideInInspector]
     public CardsInfo initialInfo;
 
     Vector2 startSize;
@@ -26,11 +27,6 @@ public class Card : MonoBehaviour
 
 
     #endregion
-
-    Card(Card card)
-    {
-      
-    }
 
     #region Properties
 
@@ -127,7 +123,6 @@ public class Card : MonoBehaviour
 
             rectCard.transform.rotation = Quaternion.Lerp(startAngle, finalAngle, y);
             rectCard.anchoredPosition = Vector3.Lerp(startPosition, finalPositionWithCurve, y);
-            //rectCard.GetChild(0).localScale = Vector3.one * ((y+1)/2)* sizeInitShowCard;
 
             yield return null;
         }

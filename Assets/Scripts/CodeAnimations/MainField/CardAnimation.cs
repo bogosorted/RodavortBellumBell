@@ -24,7 +24,7 @@ public class CardAnimation : MonoBehaviour
         while (inOut? x < 1 : x > 0)
         {
             x += (inOut ? 1 : -1) * (dissolveAnimSpeed* Time.deltaTime);
-            y = -x * x + 2 * x;
+            y = (-x * x + 2 * x);
 
             card.backgroundImage.material.SetFloat("_Fill", y);
             card.design.materialForRendering.SetFloat("_Fill", y);

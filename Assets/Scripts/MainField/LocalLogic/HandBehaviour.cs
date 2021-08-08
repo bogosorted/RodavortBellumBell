@@ -33,7 +33,7 @@ public class HandBehaviour : MonoBehaviour
 
     //the card only its added on final animation of initialized
     // that is the accurate hand.count
-    int handActualCount;
+    [HideInInspector]public int handActualCount;
 
     public struct HandAnimationSettings
     {

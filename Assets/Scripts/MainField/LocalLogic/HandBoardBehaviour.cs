@@ -5,14 +5,15 @@ using UnityEngine;
 public class HandBoardBehaviour : MonoBehaviour
 {
     List<Card> handBoard = new List<Card>();
-
+    [Header("Board Refferences")]
     [SerializeField] HandBehaviour handBehave;
     [SerializeField] GameObject cardPrefab;
 
-    [SerializeField] Vector2 handOffset;
-    [SerializeField] float handWidthMultiplier;
+    [Header("Board Settings")]
     [SerializeField] float maxHandAngle;
+    [SerializeField] float handWidthMultiplier;
     [SerializeField] float handSizeIncreaseValue;
+    [SerializeField] Vector2 handOffset;
   
     float handXAxisWidth;
 

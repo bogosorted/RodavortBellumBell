@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,10 +36,11 @@ public class CardAnimation : MonoBehaviour
         };
         OnEndDissolveAnimation(inOut);
     }
-    public void OnEndDissolveAnimation(bool inOut)
+    public void OnEndDissolveAnimation(bool inOut, Action<int> DoAfter = null)
     {
         if(!inOut)
             Destroy(transform.parent.gameObject);
+        
     }
 
     void SetAlpha<T>(T graphic, float alpha)

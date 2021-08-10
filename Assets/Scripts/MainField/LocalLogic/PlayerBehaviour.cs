@@ -30,9 +30,9 @@ public class PlayerBehaviour : MonoBehaviour
             hand.handActualCount--;
             board.CreateCard(card);
             
-
+            print(board.CalculeCardFinalPosition(board.GetHandCount));
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition =  rectBoard.anchoredPosition + board.CalculeCardFinalPosition(board.GetHandCount) * Vector2.right ;
+            card.finalPosition =  rectBoard.anchoredPosition + board.CalculeCardFinalPosition(board.GetHandCount);
 
             card.startAngle = rectCard.rotation;
             card.finalAngle = Quaternion.identity;

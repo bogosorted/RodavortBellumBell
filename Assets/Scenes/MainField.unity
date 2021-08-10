@@ -283,6 +283,7 @@ MonoBehaviour:
   handWidthMultiplier: 1
   showingHandSize: 1.05
   handCardSize: 0.5
+  handActualCount: 0
 --- !u!1 &385807255
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61ab8e5b28d9be408da6be89915fe20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayer: {fileID: 0}
+  currentPlayer: {fileID: 1907176992}
   adversaryPlayer: {fileID: 0}
 --- !u!1 &640079597
 GameObject:
@@ -633,6 +634,7 @@ MonoBehaviour:
   handBehave: {fileID: 301906473}
   cardPrefab: {fileID: 7657197362493082514, guid: 956886a75267ccd448d9223b740ddba4,
     type: 3}
+  boardMaxWidth: 620
   maxHandAngle: 1
   handWidthMultiplier: 10
   handSizeIncreaseValue: 4

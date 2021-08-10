@@ -33,7 +33,7 @@ public class HandBehaviour : MonoBehaviour
 
     //the card only its added on final animation of initialized
     // that is the accurate hand.count
-    [HideInInspector]public int handActualCount;
+    [HideInInspector] public int handActualCount;
 
     public struct HandAnimationSettings
     {
@@ -115,7 +115,7 @@ public class HandBehaviour : MonoBehaviour
     void SetCardsPosition(HandAnimationSettings animSett,List<Card> paramHand)
     {
         RectTransform rectCard;
-        float WidthConst = animSett.HandXAxisWidth/ (paramHand.Count - 1);
+        float widthIncreaseConst = animSett.HandXAxisWidth/ (paramHand.Count - 1);
         float concat = -animSett.HandXAxisWidth;
         int index = 0;
 
@@ -135,7 +135,7 @@ public class HandBehaviour : MonoBehaviour
             card.startAngle = rectCard.transform.rotation;
             card.finalAngle = Quaternion.Euler(0,0,paramHand.Count > 2 ?(-concat/animSett.HandXAxisWidth) * animSett.Angulation : 0);
 
-            concat += WidthConst * 2;   
+            concat += widthIncreaseConst * 2;   
             index ++;
         }
     }

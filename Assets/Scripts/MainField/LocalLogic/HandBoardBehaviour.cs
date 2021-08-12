@@ -19,6 +19,7 @@ public class HandBoardBehaviour : MonoBehaviour
 
     [Header("Board Offset")]
     [SerializeField] Vector2 handOffset;
+    [SerializeField] float ZangleOffSet;
   
     float handXAxisWidth;
 
@@ -32,7 +33,7 @@ public class HandBoardBehaviour : MonoBehaviour
     {
         boardMaxWidth /= handWidthMultiplier;
 
-        boardAnimationSettings = new HandBehaviour.HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
+        boardAnimationSettings = new HandBehaviour.HandAnimationSettings(handOffset,ZangleOffSet,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
     }
     public int GetHandCount{get => handBoard.Count;}
 

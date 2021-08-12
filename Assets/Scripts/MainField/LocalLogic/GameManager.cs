@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerBehaviour currentPlayer;
     [SerializeField] PlayerBehaviour adversaryPlayer;
     //sistema de turnos
+    //recebe e exibe informações vindas do servidor
     
 
 }

@@ -11,6 +11,7 @@ public class HandBehaviour : MonoBehaviour
 
     [SerializeField] GameObject cardPrefab;
     [SerializeField] GameObject cardInHand;
+    [SerializeField] bool adversaryPlayer;
 
     [Header("Initial Created Card Settings")]
     [SerializeField] float initCardAnimationSpeed;
@@ -20,8 +21,9 @@ public class HandBehaviour : MonoBehaviour
 
     
     [Header("Hand Card Settings")]
+    
     [SerializeField] float handAnimationSpeed;  
-    [SerializeField] float handXAxisWidth,maxHandAngle,handSizeIncreaseValue;
+    [SerializeField] float handXAxisWidth,maxHandAngle,handSizeIncreaseValue,ZangleOffSet;
     [SerializeField] Vector2 handOffset,showingHandOffset;
     [SerializeField] float handWidthMultiplier;
 
@@ -37,16 +39,18 @@ public class HandBehaviour : MonoBehaviour
 
     public struct HandAnimationSettings
     {
-        public HandAnimationSettings(Vector2 offSet,float angulation,float widthMultiplier,float handXWidth,bool playerHand)
+        public HandAnimationSettings(Vector2 offSet,float zAngleOffSet,float angulation,float widthMultiplier,float handXWidth,bool playerHand)
         {
             OffSet = offSet;
             Angulation = angulation;
+            ZAngleOffSet = zAngleOffSet;
             WidthMultiplier = widthMultiplier;
             HandXAxisWidth = handXWidth;
             PlayerHand = playerHand;
         }
 
         public Vector2 OffSet{get;}
+        public float ZAngleOffSet{get;}
         public float Angulation{get;}
         public float WidthMultiplier{get;}
         public float HandXAxisWidth{get;set;}
@@ -57,8 +61,8 @@ public class HandBehaviour : MonoBehaviour
     void Awake()
     {
         
-        playerHandAnimation = new HandAnimationSettings(handOffset,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
-        showingHandAnimation = new HandAnimationSettings(showingHandOffset,maxShowingAngle,showingHandWidthMultiplier,handXAxisWidth,true);
+        playerHandAnimation = new HandAnimationSettings(handOffset,ZangleOffSet,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
+        showingHandAnimation = new HandAnimationSettings(showingHandOffset,ZangleOffSet,maxShowingAngle,showingHandWidthMultiplier,handXAxisWidth,true);
         
         CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
 
@@ -73,25 +77,28 @@ public class HandBehaviour : MonoBehaviour
         
     }
 
-    void CreateCard(int index)
+    void CreateCard(int index = -1) // if index == -1, the card will not have information (Enimy card)
     { 
+    
+        
         if(handActualCount < MaxCardInHand)
         {
-
-            handActualCount++;
-
-            CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
-
             GameObject refCard = Instantiate(cardPrefab,cardInHand.transform);
             Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
-        
-            newCard.ReceiveStartInfo(cardInfo);
+            handActualCount++;
             
-            newCard.startPosition = startPosInitialCard;
-            newCard.finalPosition = finalPosInitialCard;
-        
-            StartCoroutine(ShowInitializedCard(newCard));
+            if(index != -1)
+            {
+                CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
+
             
+                newCard.ReceiveStartInfo(cardInfo);
+                
+                newCard.startPosition = startPosInitialCard;
+                newCard.finalPosition = finalPosInitialCard;
+            
+                StartCoroutine(ShowInitializedCard(newCard));
+            }
         }    
     }
 
@@ -133,7 +140,7 @@ public class HandBehaviour : MonoBehaviour
             rectCard = card.transform as RectTransform;
 
             card.startAngle = rectCard.transform.rotation;
-            card.finalAngle = Quaternion.Euler(0,0,paramHand.Count > 2 ?(-concat/animSett.HandXAxisWidth) * animSett.Angulation : 0);
+            card.finalAngle = Quaternion.Euler(0,0,paramHand.Count > 2 ?(-concat/animSett.HandXAxisWidth) * animSett.Angulation + animSett.ZAngleOffSet: animSett.ZAngleOffSet);
 
             concat += widthIncreaseConst * 2;   
             index ++;
@@ -145,7 +152,7 @@ public class HandBehaviour : MonoBehaviour
         //x its constant, y its smooth. both are 1 when the another be 1
 
         card.startAngle = Quaternion.Euler(0,90,90);
-        card.finalAngle = Quaternion.identity;
+        card.finalAngle = Quaternion.Euler(0,0,playerHandAnimation.ZAngleOffSet);
        
 
         card.MoveTo(initCardAnimationSpeed,initCardXMaxCurvePos,initCardYMaxCurvePos);
@@ -159,7 +166,7 @@ public class HandBehaviour : MonoBehaviour
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(GetComponent<HandBoardInput>().pointerOnBoard)
+        if(!adversaryPlayer && GetComponent<HandBoardInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
             SetCardsHandRaycast(true);

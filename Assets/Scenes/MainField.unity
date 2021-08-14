@@ -265,7 +265,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 2301914378777495648, guid: fe37b15ea49581946af24e5aa98174f7,
     type: 3}
   cardInHand: {fileID: 1637659906}
-  adversaryPlayer: 0
+  isAdversaryPlayer: 0
   initCardAnimationSpeed: 1.5
   initCardShowTime: 1.5
   sizeInitShowCard: 1.2
@@ -273,14 +273,14 @@ MonoBehaviour:
   initCardXMaxCurvePos: 700
   maxShowingAngle: 1
   startPosInitialCard: {x: 580, y: 200}
-  finalPosInitialCard: {x: 150, y: 560}
+  finalPosInitialCard: {x: 120, y: 560}
   showingHandWidthMultiplier: 3.5
   handAnimationSpeed: 2
   handXAxisWidth: 50
   maxHandAngle: 4
   handSizeIncreaseValue: 15
   ZangleOffSet: 0
-  handOffset: {x: 0, y: 0}
+  handOffset: {x: 0, y: 20}
   showingHandOffset: {x: 0, y: 200}
   handWidthMultiplier: 1
   showingHandSize: 1.05
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385807255}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 933e644b28762f245a15f354be7fc294, type: 3}
   m_Name: 
@@ -339,7 +339,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 2301914378777495648, guid: fe37b15ea49581946af24e5aa98174f7,
     type: 3}
   cardInHand: {fileID: 927556138}
-  adversaryPlayer: 1
+  isAdversaryPlayer: 1
   initCardAnimationSpeed: 1.5
   initCardShowTime: 1.5
   sizeInitShowCard: 1.2
@@ -347,7 +347,7 @@ MonoBehaviour:
   initCardXMaxCurvePos: -700
   maxShowingAngle: 1
   startPosInitialCard: {x: -580, y: 0}
-  finalPosInitialCard: {x: -150, y: -340}
+  finalPosInitialCard: {x: -120, y: -340}
   showingHandWidthMultiplier: 3.5
   handAnimationSpeed: 2
   handXAxisWidth: 50
@@ -488,8 +488,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1907176991}
   - {fileID: 2017040015}
+  - {fileID: 1907176991}
   m_Father: {fileID: 574890779}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -810,7 +810,7 @@ RectTransform:
   - {fileID: 1331466722}
   - {fileID: 301906469}
   m_Father: {fileID: 640079598}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1008,7 +1008,7 @@ RectTransform:
   - {fileID: 165818087}
   - {fileID: 385807256}
   m_Father: {fileID: 640079598}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

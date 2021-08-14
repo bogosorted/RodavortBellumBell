@@ -6,7 +6,11 @@
         "credits":"Créditos"
     },
     "cards":
-    [{   
+    [{
+        "name": "ANONIMA",
+        "description": "carta sem atributos"
+    },{   
+        
         "name":"TROVADOR",
         "description":"Ataque: 1+/-1 para todas as cartas"
     }, {

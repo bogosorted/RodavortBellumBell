@@ -11,7 +11,7 @@ public class HandBehaviour : MonoBehaviour
 
     [SerializeField] GameObject cardPrefab;
     [SerializeField] GameObject cardInHand;
-    [SerializeField] bool adversaryPlayer;
+    [SerializeField] bool isAdversaryPlayer;
 
     [Header("Initial Created Card Settings")]
     [SerializeField] float initCardAnimationSpeed;
@@ -58,13 +58,23 @@ public class HandBehaviour : MonoBehaviour
     }
 
 
-    void Awake()
+    void Start()
     {
         
         playerHandAnimation = new HandAnimationSettings(handOffset,ZangleOffSet,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
         showingHandAnimation = new HandAnimationSettings(showingHandOffset,ZangleOffSet,maxShowingAngle,showingHandWidthMultiplier,handXAxisWidth,true);
         
-        CreateCard(0);CreateCard(0);CreateCard(0);CreateCard(0);
+        if(isAdversaryPlayer)
+        {
+        CreateCard();CreateCard();CreateCard();
+        }
+        else
+        {
+        CreateCard();CreateCard(1);CreateCard(1);
+        }
+        
+            
+        
 
     }
     void Update()
@@ -77,28 +87,29 @@ public class HandBehaviour : MonoBehaviour
         
     }
 
-    void CreateCard(int index = -1) // if index == -1, the card will not have information (Enimy card)
+    void CreateCard(uint index = 0) // if index == 0, the card will not have information (Enemy card)
     { 
-    
-        
+
         if(handActualCount < MaxCardInHand)
         {
             GameObject refCard = Instantiate(cardPrefab,cardInHand.transform);
             Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
             handActualCount++;
             
-            if(index != -1)
-            {
-                CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
+            CardsInfo cardInfo = Resources.Load<CardsInfo>("Db/DbCardsAttributes/" + index.ToString());
+            newCard.ReceiveStartInfo(cardInfo);
 
-            
-                newCard.ReceiveStartInfo(cardInfo);
-                
-                newCard.startPosition = startPosInitialCard;
-                newCard.finalPosition = finalPosInitialCard;
-            
-                StartCoroutine(ShowInitializedCard(newCard));
+            if(index == 0)
+            {
+                newCard.GetComponent<Image>().sprite = cardInfo.design;
+                newCard.transform.GetChild(0).gameObject.SetActive(false);
+                newCard.transform.GetChild(1).gameObject.SetActive(false);
             }
+
+            newCard.startPosition = startPosInitialCard;
+            newCard.finalPosition = finalPosInitialCard;
+
+            StartCoroutine(ShowInitializedCard(newCard));
         }    
     }
 
@@ -166,7 +177,7 @@ public class HandBehaviour : MonoBehaviour
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(!adversaryPlayer && GetComponent<HandBoardInput>().pointerOnBoard)
+        if(!isAdversaryPlayer && GetComponent<HandBoardInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
             SetCardsHandRaycast(true);

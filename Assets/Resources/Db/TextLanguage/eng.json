@@ -6,7 +6,10 @@
         "credits":"CREDITS"
     },
     "cards":
-    [{   
+    [{
+        "name": "ANONYMOUS",
+        "description": "card without attributes"
+    }, {   
         "name":"TROUBADOR",
         "description":"realy nice card"
     }, {

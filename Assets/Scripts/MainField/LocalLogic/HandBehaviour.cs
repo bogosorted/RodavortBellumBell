@@ -10,7 +10,8 @@ public class HandBehaviour : MonoBehaviour
     const int MaxCardInHand = 10;
 
     [SerializeField] GameObject cardPrefab;
-    [SerializeField] GameObject cardInHand;
+    [SerializeField] public GameObject cardsToHand,cardsToBoard;
+    
     [SerializeField] bool isAdversaryPlayer;
 
     [Header("Initial Created Card Settings")]
@@ -70,7 +71,7 @@ public class HandBehaviour : MonoBehaviour
         }
         else
         {
-        CreateCard();CreateCard(1);CreateCard(1);
+        CreateCard(1);CreateCard(1);CreateCard(1);
         }
         
             
@@ -82,7 +83,10 @@ public class HandBehaviour : MonoBehaviour
         //test will be removed on realese
         if(Input.GetKeyDown(KeyCode.Z))
         {
-            CreateCard(0);
+            if(!isAdversaryPlayer)
+                CreateCard(1);
+            else
+                CreateCard(0);
         }   
         
     }
@@ -92,7 +96,7 @@ public class HandBehaviour : MonoBehaviour
 
         if(handActualCount < MaxCardInHand)
         {
-            GameObject refCard = Instantiate(cardPrefab,cardInHand.transform);
+            GameObject refCard = Instantiate(cardPrefab,cardsToHand.transform);
             Card newCard = refCard.transform.GetChild(0).GetComponent<Card>();
             handActualCount++;
             
@@ -144,6 +148,9 @@ public class HandBehaviour : MonoBehaviour
 
             card.startPosition = rectCard.anchoredPosition;
             card.finalPosition = new Vector2((paramHand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0) , animSett.OffSet.y + (-Mathf.Abs(concat)/(animSett.Angulation*15)));
+                      
+            //card.finalPosition +=(this.transform as RectTransform).anchoredPosition;
+            //print((this.transform as RectTransform).position);
 
             card.transform.parent.SetSiblingIndex(card.posInHand);
 
@@ -171,13 +178,15 @@ public class HandBehaviour : MonoBehaviour
             
         yield return new WaitForSeconds(initCardShowTime);
 
+        card.transform.parent.SetParent(transform);
         hand.Add(card);
+
         
         playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
         
-        if(!isAdversaryPlayer && GetComponent<HandBoardInput>().pointerOnBoard)
+        if(!isAdversaryPlayer && GetComponent<HandInput>().pointerOnBoard)
         {
             ShowAmplifiedHand();
             SetCardsHandRaycast(true);

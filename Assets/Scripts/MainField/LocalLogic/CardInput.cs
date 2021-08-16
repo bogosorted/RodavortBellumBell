@@ -10,7 +10,7 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
     [SerializeField] Card actualCard;
     
     PlayerBehaviour player;
-    HandBoardInput handBoard;
+    HandInput handBoard;
     HandBehaviour playerHand;
     
 
@@ -21,7 +21,7 @@ public class CardInput :  MonoBehaviour ,IPointerExitHandler, IPointerEnterHandl
     {
         player = GameObject.Find("Player").GetComponent<PlayerBehaviour>();
         playerHand = GameObject.Find("PlayerHand").GetComponent<HandBehaviour>();
-        handBoard = playerHand.GetComponent<HandBoardInput>();
+        handBoard = playerHand.GetComponent<HandInput>();
       
     }
     public void OnPointerEnter(PointerEventData eventData)

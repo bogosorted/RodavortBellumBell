@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class HandBoardInput : MonoBehaviour ,IPointerExitHandler, IPointerEnterHandler  
+public class HandInput : MonoBehaviour ,IPointerExitHandler, IPointerEnterHandler  
 {
 
   [SerializeField] HandBehaviour playerHand;

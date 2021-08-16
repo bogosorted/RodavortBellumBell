@@ -7,6 +7,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] HandBehaviour hand; 
     [SerializeField] HandBoardBehaviour board;
 
+
     
     bool isMultiplayer;
     int life;
@@ -17,13 +18,14 @@ public class PlayerBehaviour : MonoBehaviour
         //if server receive
         if(true)
         {
+            RectTransform rectHandPlayer = transform as RectTransform;
             RectTransform rectCard = card.transform.parent as RectTransform;
             RectTransform rectBoard = board.transform as RectTransform;
             CardAnimation cardAnim = card.GetComponent<CardAnimation>();
 
             //set the card to be a child of "CardsOutside", to be under of the real 
             //cards hand without automatically set the childrens by "HandBehavior"
-            rectCard.transform.SetParent(hand.transform.GetChild(0));
+            rectCard.transform.SetParent(hand.cardsToBoard.transform);
     
             StartCoroutine(cardAnim.Dissolve(false));
 
@@ -31,7 +33,7 @@ public class PlayerBehaviour : MonoBehaviour
             board.CreateCard(card);
             
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition =  rectBoard.anchoredPosition + board.CalculeCardFinalPosition(board.GetHandCount);
+            card.finalPosition =  rectBoard.anchoredPosition  + board.CalculeCardFinalPosition(board.GetHandCount);
 
             card.startAngle = rectCard.rotation;
             card.finalAngle = Quaternion.identity;

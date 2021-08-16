@@ -23,17 +23,18 @@ public class HandBoardBehaviour : MonoBehaviour
   
     float handXAxisWidth;
 
-    //const int MaxCardInHand = 10; i dont finish this yet
+    //const int MaxCardInHand = 10; dont have max limit yet
 
     HandBehaviour.HandAnimationSettings boardAnimationSettings;
     Coroutine organizeHandCurrentCoroutine;
 
     
-    void Awake() 
+    void Start() 
     {
         boardMaxWidth /= handWidthMultiplier;
 
         boardAnimationSettings = new HandBehaviour.HandAnimationSettings(handOffset,ZangleOffSet,maxHandAngle,handWidthMultiplier,handXAxisWidth,true);
+        
     }
     public int GetHandCount{get => handBoard.Count;}
 

@@ -55,8 +55,13 @@ public class HandBoardBehaviour : MonoBehaviour
 
         StartCoroutine(cardAnim.Dissolve(true));  
         
+        OrganizeBoard();
+
+    }
+    public void OrganizeBoard()
+    {
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(handBehave.OrganizeHand(boardAnimationSettings,handBoard));
+        organizeHandCurrentCoroutine = StartCoroutine(handBehave.OrganizeHandAnim(boardAnimationSettings,handBoard));
 
     }
     public Vector2 CalculeCardFinalPosition(int handCount)

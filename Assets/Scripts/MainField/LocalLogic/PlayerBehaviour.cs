@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerBehaviour : MonoBehaviour
 {
-    [SerializeField] HandBehaviour hand; 
-    [SerializeField] HandBoardBehaviour board;
+    [SerializeField] public HandBehaviour hand; 
+    [SerializeField] public HandBoardBehaviour board;
 
 
     
@@ -18,6 +18,7 @@ public class PlayerBehaviour : MonoBehaviour
         //if server receive
         if(true)
         {
+            
             RectTransform rectHandPlayer = transform as RectTransform;
             RectTransform rectCard = card.transform.parent as RectTransform;
             RectTransform rectBoard = board.transform as RectTransform;
@@ -33,7 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
             board.CreateCard(card);
             
             card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition =  rectBoard.anchoredPosition  + board.CalculeCardFinalPosition(board.GetHandCount);
+            card.finalPosition =  rectBoard.anchoredPosition + board.CalculeCardFinalPosition(board.GetHandCount);
 
             card.startAngle = rectCard.rotation;
             card.finalAngle = Quaternion.identity;
@@ -41,7 +42,6 @@ public class PlayerBehaviour : MonoBehaviour
             card.MoveTo(1,0,0);
             card.ChangeSize(0.4885f,2);
 
-            
         }
 
     }

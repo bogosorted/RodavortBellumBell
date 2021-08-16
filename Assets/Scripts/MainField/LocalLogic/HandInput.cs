@@ -17,7 +17,7 @@ public class HandInput : MonoBehaviour ,IPointerExitHandler, IPointerEnterHandle
 
   RectTransform rect;
 
-  void Awake()
+  void Start()
   {
     rect = transform as RectTransform;
     ChangeColliderSize(normalColliderSize);

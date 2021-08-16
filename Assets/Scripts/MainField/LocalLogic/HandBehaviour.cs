@@ -121,37 +121,42 @@ public class HandBehaviour : MonoBehaviour
     {
         hand.Insert(cardPosInHand,card);
 
-         playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+        playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
 
-        if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
+        OrganizeHand();
 
         ChangeHandSize(handCardSize,hand);   
     }
-    public void RemoveCard(int cardPosInHand)
+    public Card RemoveCard(int cardPosInHand)
     {
+        Card removedCard = hand[cardPosInHand];
+
         hand.RemoveAt(cardPosInHand);
         playerHandAnimation.HandXAxisWidth = showingHandAnimation.HandXAxisWidth = (hand.Count-1) * handSizeIncreaseValue;
+
+        return removedCard;
     }
 
     void SetCardsPosition(HandAnimationSettings animSett,List<Card> paramHand)
     {
         RectTransform rectCard;
+        float xPos,yPos;
         float widthIncreaseConst = animSett.HandXAxisWidth/ (paramHand.Count - 1);
         float concat = -animSett.HandXAxisWidth;
         int index = 0;
+
 
         foreach(Card card in paramHand)
         {          
             card.posInHand = index;
             rectCard = card.transform.parent as RectTransform;
 
-            card.startPosition = rectCard.anchoredPosition;
-            card.finalPosition = new Vector2((paramHand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0) , animSett.OffSet.y + (-Mathf.Abs(concat)/(animSett.Angulation*15)));
-                      
-            //card.finalPosition +=(this.transform as RectTransform).anchoredPosition;
-            //print((this.transform as RectTransform).position);
+            xPos = paramHand.Count != 1 ? (concat * animSett.WidthMultiplier) + animSett.OffSet.x : 0;
+            yPos = (-Mathf.Abs(concat)/(animSett.Angulation*15)) + animSett.OffSet.y;
 
+            card.startPosition = rectCard.anchoredPosition;
+            card.finalPosition = new Vector2(xPos , yPos);
+                      
             card.transform.parent.SetSiblingIndex(card.posInHand);
 
             //ROTATE ONLY THE IMAGE AND NOT THE GRAPHIC_COLLIDER
@@ -193,12 +198,17 @@ public class HandBehaviour : MonoBehaviour
         }
         else
         {
-            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
+            organizeHandCurrentCoroutine = StartCoroutine(OrganizeHandAnim(playerHandAnimation,hand));
             ChangeHandSize(handCardSize,hand);
         }      
     }
     
-    public IEnumerator OrganizeHand(HandAnimationSettings animSett,List<Card> paramHand)
+    public void OrganizeHand()
+    {
+        if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHandAnim(playerHandAnimation,hand));
+    }
+    public IEnumerator OrganizeHandAnim(HandAnimationSettings animSett,List<Card> paramHand)
     {
         RectTransform rectCard;
         float x,y;
@@ -236,7 +246,7 @@ public class HandBehaviour : MonoBehaviour
     public void ShowAmplifiedHand()
     {
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}     
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(showingHandAnimation,hand));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHandAnim(showingHandAnimation,hand));
 
         ChangeHandSize(showingHandSize,hand);
 
@@ -245,7 +255,7 @@ public class HandBehaviour : MonoBehaviour
     {
         
         if (organizeHandCurrentCoroutine != null) {StopCoroutine(organizeHandCurrentCoroutine);}
-        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHand(playerHandAnimation,hand));
+        organizeHandCurrentCoroutine = StartCoroutine(OrganizeHandAnim(playerHandAnimation,hand));
 
         ChangeHandSize(handCardSize,hand);
     }

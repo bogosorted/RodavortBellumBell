@@ -51,6 +51,8 @@ public class HandBoardBehaviour : MonoBehaviour
         handBoard.Add(cardAttributes);
 
         float boardWidth = (handBoard.Count-1) * handSizeIncreaseValue;
+
+        //limit of Width
         boardAnimationSettings.HandXAxisWidth = Mathf.Clamp(boardWidth,-boardMaxWidth/2,boardMaxWidth/2); 
 
         StartCoroutine(cardAnim.Dissolve(true));  

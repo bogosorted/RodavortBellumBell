@@ -12,7 +12,7 @@ public class HandBehaviour : MonoBehaviour
     [SerializeField] GameObject cardPrefab;
     [SerializeField] public GameObject cardsToHand,cardsToBoard;
     
-    [SerializeField] bool isAdversaryPlayer;
+    [SerializeField] public bool isAdversaryPlayer;
 
     [Header("Initial Created Card Settings")]
     [SerializeField] float initCardAnimationSpeed;

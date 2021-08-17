@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-public class UserPrefs
+public static class UserPrefs
 {
     //default lenguage
     public static string lenguage = "eng";

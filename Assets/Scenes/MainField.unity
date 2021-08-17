@@ -212,7 +212,7 @@ MonoBehaviour:
   handWidthMultiplier: 10
   handSizeIncreaseValue: 6
   handOffset: {x: 0, y: 0}
-  ZangleOffSet: 180
+  ZangleOffSet: 0
 --- !u!1 &301906468
 GameObject:
   m_ObjectHideFlags: 0

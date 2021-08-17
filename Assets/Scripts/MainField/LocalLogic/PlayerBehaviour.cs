@@ -18,8 +18,6 @@ public class PlayerBehaviour : MonoBehaviour
         //if server receive
         if(true)
         {
-            
-            RectTransform rectHandPlayer = transform as RectTransform;
             RectTransform rectCard = card.transform.parent as RectTransform;
             RectTransform rectBoard = board.transform as RectTransform;
             CardAnimation cardAnim = card.GetComponent<CardAnimation>();
@@ -31,6 +29,7 @@ public class PlayerBehaviour : MonoBehaviour
             StartCoroutine(cardAnim.Dissolve(false));
 
             hand.handActualCount--;
+
             board.CreateCard(card);
             
             card.startPosition = rectCard.anchoredPosition;
